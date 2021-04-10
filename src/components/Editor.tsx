@@ -7,6 +7,7 @@ export interface EditorProps {
   height?: string
   onChange?: () => void
   value?: string
+  defaultValue?: string
 }
 
 const StyledEditor = styled(Editor)<EditorProps>`

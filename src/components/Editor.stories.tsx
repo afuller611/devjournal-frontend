@@ -10,3 +10,6 @@ export default {
 const Template: Story<EditorProps> = (args) => <CustomEditor {...args} />
 
 export const Editor = Template.bind({})
+Editor.args = {
+  value: `### Header\n[Link](linksite.example.com)\n**Bold Text**\n__Also Bold Text__\n*Italics Text*\n_Also Italics Text_\n`
+}
