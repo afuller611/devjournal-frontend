@@ -4,10 +4,7 @@ import { Button, ButtonProps } from './Button';
 
 export default {
   title: 'Example/Button',
-  component: Button,
-  argTypes: {
-    backgroundColor: { control: 'color' },
-  },
+  component: Button
 } as Meta;
 
 const Template: Story<ButtonProps> = (args) => <Button {...args} />;
