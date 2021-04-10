@@ -3,7 +3,7 @@ import { Story, Meta } from '@storybook/react'
 import { Select, SelectProps } from './Select'
 
 export default {
-  title: 'Example/Input',
+  title: 'Basic/Input',
   component: Select,
 } as Meta
 

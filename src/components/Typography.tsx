@@ -44,10 +44,8 @@ export const Typography: React.FC<TypographyProps> = ({
   ...props
 }) => {
   return (
-    <>
-      <StyledDiv color={color} {...props}>
-        {children}
-      </StyledDiv>
-    </>
+    <StyledDiv color={color} {...props}>
+      {children}
+    </StyledDiv>
   )
 }
