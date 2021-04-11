@@ -7,6 +7,7 @@ export interface ButtonProps {
   size?: 'small' | 'medium' | 'large'
   children: string
   onClick?: () => void
+  style?: any
 }
 
 const StyledButton = styled.button<ButtonProps>`
@@ -41,12 +42,14 @@ export const Button: React.FC<ButtonProps> = ({
   backgroundColor = '#17f8ff',
   textColor = '#fff',
   children,
+  style,
   ...props
 }) => {
   return (
     <StyledButton
       backgroundColor={backgroundColor}
       textColor={textColor}
+      style={style}
       size={size}
       {...props}
     >

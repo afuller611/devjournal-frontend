@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import { Modal } from './components/Modal'
+import { Modal } from '../../components/Modal'
 import { Tooltip, IconButton } from '@material-ui/core'
 import { AccountCircle } from '@material-ui/icons'
-import { Typography } from './components/Typography'
+import { Typography } from '../../components/Typography'
 
 const MyAccount = ({ ...props }) => {
   const [open, setOpen] = useState(false)
