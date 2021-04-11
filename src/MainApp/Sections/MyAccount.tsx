@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { Modal } from '../../components/Modal'
-import { Tooltip, IconButton } from '@material-ui/core'
+import { Tooltip, IconButton, Grid } from '@material-ui/core'
 import { AccountCircle } from '@material-ui/icons'
 import { Typography } from '../../components/Typography'
+import { Close } from '@material-ui/icons';
 
 const MyAccount = ({ ...props }) => {
   const [open, setOpen] = useState(false)
@@ -14,7 +15,14 @@ const MyAccount = ({ ...props }) => {
         </IconButton>
       </Tooltip>
       <Modal handleClose={() => setOpen(false)} open={open}>
-        My Account Modal
+        <Grid container justify="space-between">
+          <Typography variant="header">
+            {"My Account"}
+          </Typography>
+          <IconButton onClick={() => setOpen(false)}>
+            <Close />
+          </IconButton>
+        </Grid>
       </Modal>
     </>
   )
