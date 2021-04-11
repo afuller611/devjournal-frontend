@@ -13,9 +13,15 @@ const Template: Story<NavProps> = (args) => {
   return (
     <Router>
       <Nav {...args}>
-        <StyledNavLink to="#">{'Home'}</StyledNavLink>
-        <StyledNavLink to="#">{'About'}</StyledNavLink>
-        <StyledNavLink to="#">{'Entries'}</StyledNavLink>
+        <StyledNavLink activeStyle={{ backgroundColor: 'black' }} to="#">
+          {'Home'}
+        </StyledNavLink>
+        <StyledNavLink activeStyle={{ backgroundColor: 'black' }} to="#">
+          {'About'}
+        </StyledNavLink>
+        <StyledNavLink activeStyle={{ backgroundColor: 'black' }} to="#">
+          {'Entries'}
+        </StyledNavLink>
       </Nav>
     </Router>
   )
