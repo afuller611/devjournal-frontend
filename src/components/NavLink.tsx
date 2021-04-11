@@ -9,7 +9,7 @@ const StyledNavLink = styled(NavLink)`
   text-decoration: none;
   font-size: 30px;
   &:hover {
-    opacity: 0.5;
+    opacity: 0.8;
     background-color: black;
     color: white;
   }

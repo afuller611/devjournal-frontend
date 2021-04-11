@@ -1,25 +1,26 @@
 import React from 'react'
 import { Nav } from './components/Nav'
-import StyledNavLink from './components/NavLink'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { Grid } from '@material-ui/core'
+import MyAccount from './MyAccount'
+import ContentArea from './components/ContentArea'
+import NavContent from './NavContent'
 
-function App() {
+const App = (props: any) => {
   return (
     <div>
       <Router>
         <Nav>
-          <StyledNavLink activeStyle={{backgroundColor: "black"}} to="/home">{'Home'}</StyledNavLink>
-          <StyledNavLink activeStyle={{backgroundColor: "black"}} to="/about">{'About'}</StyledNavLink>
-          <StyledNavLink activeStyle={{backgroundColor: "black"}} to="/entries">{'Entries'}</StyledNavLink>
-        </Nav>
-        <Grid container justify="center">
-          <Grid item xs={11} sm={8}>
-            <Route path="/entries">entries</Route>
-            <Route path="/about">about</Route>
-            <Route path="/home">home</Route>
+          <Grid container justify="space-between">
+            <NavContent />
+            <MyAccount />
           </Grid>
-        </Grid>
+        </Nav>
+        <ContentArea>
+          <Route path="/entries">entries component here</Route>
+          <Route path="/about">about component here (probs not needed)</Route>
+          <Route path="/home">home component here</Route>
+        </ContentArea>
       </Router>
     </div>
   )
