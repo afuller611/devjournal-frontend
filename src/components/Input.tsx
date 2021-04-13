@@ -10,7 +10,7 @@ export interface InputProps {
   label: string
   labelColor?: string
   value?: string
-  onChange?: () => void
+  onChange?: (e: React.FormEvent<HTMLInputElement>) => void
   disabled?: boolean
   required?: boolean
   placeholder?: string

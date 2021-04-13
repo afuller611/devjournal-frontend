@@ -1,11 +1,13 @@
-import React, { useState, useContext, createContext } from "react";
+import React, { useState, useContext, createContext, useEffect } from "react";
+import { useHistory, withRouter } from "react-router-dom";
 
 
 const defaultAuthState = {
     isAuthenticated: false,
     username: "",
     authenticate: () => {},
-    logOut: () => {}
+    logOut: () => {},
+    authenticating: false
 }
 
 const AuthContext = createContext(defaultAuthState);
@@ -14,24 +16,45 @@ export const useAuth = () => useContext(AuthContext);
 
 
 const AuthProvider = ({ ...props }) => {
+    const history = useHistory();
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [authenticating, setAuthenticating] = useState(false);
     const [username, setUsername] = useState("");
     const authenticate = () => {
-        console.log("authenticating")
-        setIsAuthenticated(true);
-        setUsername("test");
+        setAuthenticating(true)
+
+        // TODO
+        // need an axios request that will get the JWT
+        // Store jwt in local storage
+        // Set name, username in state (assuming we get both from Jwt...probs won't get name) 
+
+        setTimeout(() => {
+            setIsAuthenticated(true);
+            setUsername("test");
+            setAuthenticating(false);
+            history.push("/entries");
+        }, 2000)
     }
     
     const logOut = () => {
+        // Remove JWT
         setIsAuthenticated(false);
+        history.push("/");
         setUsername("");
     }
+
+    // TODO
+    useEffect(() => {
+        // On initial load, let's check for JWT in local storage
+        // We can also send a request to API to see if it's a valid JWT
+    }, [])
 
     const authObject = {
         isAuthenticated,
         username,
         authenticate,
-        logOut
+        logOut,
+        authenticating
 
     }
     return (
@@ -41,4 +64,4 @@ const AuthProvider = ({ ...props }) => {
     )
 }
 
-export default AuthProvider;
+export default withRouter(AuthProvider);

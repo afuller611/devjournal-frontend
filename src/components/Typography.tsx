@@ -7,6 +7,7 @@ export interface TypographyProps {
   bold?: boolean
   children: string
   fontFamily?: string
+  textAlign?: 'center' | 'left' | 'right' | 'justify'
 }
 
 const StyledDiv = styled.div<TypographyProps>`
@@ -36,6 +37,11 @@ const StyledDiv = styled.div<TypographyProps>`
     css`
       font-family: ${fontFamily};
     `}
+  ${({ textAlign }) =>
+    textAlign &&
+    css`
+      text-align: ${textAlign};
+    `};
 `
 
 export const Typography: React.FC<TypographyProps> = ({
