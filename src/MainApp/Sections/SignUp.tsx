@@ -19,10 +19,8 @@ const SignUp = () => {
     signUpAPI({name, username, password}).then(() => {
       history.push('/signup-complete')
     }).catch(() => {
-      alert("It appears that username has already been used")
+      alert("It appears that username has already been used, please try again")
     })
-
-    console.log('submitting')
   }
   return (
     <div>
