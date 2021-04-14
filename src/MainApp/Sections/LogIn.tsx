@@ -8,7 +8,7 @@ import { Typography } from '../../components/Typography'
 const LogIn = () => {
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault()
-    authenticate()
+    authenticate(username, password);
   }
 
   const [username, setUsername] = useState('')

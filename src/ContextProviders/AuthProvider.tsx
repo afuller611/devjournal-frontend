@@ -1,11 +1,11 @@
 import React, { useState, useContext, createContext, useEffect } from "react";
 import { useHistory, withRouter } from "react-router-dom";
-
+import {logInAPI} from '../api/usersAPI';
 
 const defaultAuthState = {
     isAuthenticated: false,
     username: "",
-    authenticate: () => {},
+    authenticate: (username: string, password: string) => {},
     logOut: () => {},
     authenticating: false
 }
@@ -20,14 +20,14 @@ const AuthProvider = ({ ...props }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [authenticating, setAuthenticating] = useState(false);
     const [username, setUsername] = useState("");
-    const authenticate = () => {
+    const authenticate = (username: string, password: string) => {
         setAuthenticating(true)
 
         // TODO
         // need an axios request that will get the JWT
         // Store jwt in local storage
         // Set name, username in state (assuming we get both from Jwt...probs won't get name) 
-
+        logInAPI(username, password)
         setTimeout(() => {
             setIsAuthenticated(true);
             setUsername("test");

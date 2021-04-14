@@ -4,6 +4,7 @@ import { Button } from '../../components/Button'
 import { Input } from '../../components/Input'
 import { Typography } from '../../components/Typography'
 import { useHistory } from 'react-router-dom'
+import {signUpAPI} from '../../api/usersAPI';
 
 const SignUp = () => {
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -15,9 +16,11 @@ const SignUp = () => {
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
-    setTimeout(() => {
+    signUpAPI({name, username, password}).then(() => {
       history.push('/signup-complete')
-    }, 2000)
+    }).catch(() => {
+      alert("It appears that username has already been used")
+    })
 
     console.log('submitting')
   }
