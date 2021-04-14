@@ -10,6 +10,10 @@ export const signUpAPI = async (userObject: {
 }
 
 export const logInAPI = async (username: string, password: string) => {
+  try {
     const res = await axios.post(`${process.env.REACT_APP_API_URL}/login`, {username, password})
-    console.log(res);
+    localStorage.setItem("accessToken", res.headers.authorization.split("Bearer")[1].trim());
+  } catch (err) {
+    throw err
+  }    
 }
