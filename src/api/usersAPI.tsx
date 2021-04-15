@@ -18,11 +18,7 @@ export const logInAPI = async (username: string, password: string) => {
       username,
       password,
     })
-    // Set the JWT to access token in local storage to be used everywhere else
-    localStorage.setItem(
-      'accessToken',
-      res.headers.authorization.split('Bearer')[1].trim(),
-    )
+    return res
   } catch (err) {
     throw err
   }
@@ -30,9 +26,9 @@ export const logInAPI = async (username: string, password: string) => {
 
 export const getUserIdAPI = async () => {
   try {
-    const res = await axios.post(
+    const res = await axios.put(
       `${process.env.REACT_APP_API_URL}/api/v1/user/getUserId`,
-      {},
+      {}, // empty body
       {
         headers: {
           authorization: `Bearer ${localStorage.getItem('accessToken')}`,

@@ -8,6 +8,7 @@ const defaultAuthState = {
   authenticate: (username: string, password: string) => {},
   logOut: () => {},
   authenticating: false,
+  userId: ''
 }
 
 const AuthContext = createContext(defaultAuthState)
@@ -20,20 +21,28 @@ const AuthProvider = ({ ...props }) => {
   const [authenticating, setAuthenticating] = useState(false)
   const [username, setUsername] = useState("");
   const [userId, setUserId] = useState("");
-  const authenticate = (username: string, password: string) => {
+
+  const authenticate = (usernameParam: string, password: string) => {
     setAuthenticating(true)
 
-    // TODO
-    // need an axios request that will get the JWT
-    // Store jwt in local storage
-    // Set name, username in state (assuming we get both from Jwt...probs won't get name)
-    logInAPI(username, password)
-    setTimeout(() => {
+    // Call login API
+    logInAPI(usernameParam, password).then((res) => {
+      // Set the JWT to access token in local storage to be used everywhere else
+    localStorage.setItem(
+      'accessToken',
+      res.headers.authorization.split('Bearer')[1].trim(),
+    )
       setIsAuthenticated(true)
-      setUsername('test')
-      setAuthenticating(false)
+      setUsername(usernameParam)
       history.push('/entries')
-    }, 2000)
+      setIsAuthenticated(false)
+    }).catch((err) => {
+      // On error we'll assume invalid login credentials
+      setIsAuthenticated(false)
+      setUsername("")
+      setAuthenticating(false)
+      alert("Incorrect Username and Password")
+    })
   }
 
   const logOut = () => {
@@ -56,12 +65,13 @@ const AuthProvider = ({ ...props }) => {
           } else {
               setAuthenticating(false)
               setIsAuthenticated(false)
+              localStorage.removeItem("accessToken")
           }
       })
       // Call get self endpoint to see if JWT is still valid
       // We can also send a request to API to see if it's a valid JWT
     }
-  }, [])
+  }, [username])
 
   const authObject = {
     isAuthenticated,
@@ -69,6 +79,7 @@ const AuthProvider = ({ ...props }) => {
     authenticate,
     logOut,
     authenticating,
+    userId
   }
   return (
     <AuthContext.Provider value={authObject}>
