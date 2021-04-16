@@ -6,6 +6,11 @@ export interface ModalProps {
   open: boolean
   children: any
   handleClose: () => void
+  backgroundColor?: string
+}
+
+interface ModalDivProps {
+  backgroundColor?: string
 }
 
 const ModalContainer = styled.div<ModalProps>`
@@ -25,8 +30,8 @@ const ModalContainer = styled.div<ModalProps>`
   padding-top: 100px;
 `
 
-const ModalContent = styled.div`
-  background-color: #fefefe;
+const ModalContent = styled.div<ModalDivProps>`
+  background-color: ${(props) => props.backgroundColor || '#fefefe'};
   margin: auto;
   padding: 20px;
   border-radius: 4px;
@@ -34,17 +39,27 @@ const ModalContent = styled.div`
 
 export const Modal: React.FC<ModalProps> = ({ children, ...props }) => {
   const modalContentRef = useRef(null)
-  const handleModalContainerClick = (e: React.MouseEvent) => {
-    if (modalContentRef.current && modalContentRef.current !== e.target) {
-      props.handleClose()
-    }
-  }
+  // Commenting out the modal off click because doesn't work as intended
+  // const handleModalContainerClick = (e: React.MouseEvent) => {
+  //   console.log(e.target)
+  //   if (modalContentRef.current && modalContentRef.current !== e.target) {
+  //     props.handleClose()
+  //   }
+  // }
 
   return (
-    <ModalContainer onClick={handleModalContainerClick} {...props}>
+    <ModalContainer
+      //  onClick={handleModalContainerClick}
+      {...props}
+    >
       <Grid justify="center" container>
         <Grid item xs={11} sm={8}>
-          <ModalContent ref={modalContentRef}>{children}</ModalContent>
+          <ModalContent
+            backgroundColor={props.backgroundColor}
+            ref={modalContentRef}
+          >
+            {children}
+          </ModalContent>
         </Grid>
       </Grid>
     </ModalContainer>

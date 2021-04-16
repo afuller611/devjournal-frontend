@@ -4,6 +4,7 @@ import { Grid } from '@material-ui/core'
 import { Button } from '../../components/Button'
 import MyAccount from './MyAccount'
 import { useAuth } from '../../ContextProviders/AuthProvider'
+import { Link } from 'react-router-dom'
 
 const AuthNavContent = () => {
   const { logOut } = useAuth()
@@ -11,17 +12,19 @@ const AuthNavContent = () => {
     <Grid container justify="space-between">
       <Grid item>
         <div style={{ display: 'flex' }}>
-          <img
-            src={logo}
-            alt="Dev Journal"
-            style={{ height: 60, marginRight: 10, marginTop: 5 }}
-          />
-          <StyledNavLink activeStyle={{ backgroundColor: 'black' }} to="/home">
+          <Link to="/">
+            <img
+              src={logo}
+              alt="Dev Journal"
+              style={{ height: 60, marginRight: 10, marginTop: 5 }}
+            />
+          </Link>
+          {/* <StyledNavLink activeStyle={{ backgroundColor: 'black' }} to="/home">
             {'Home'}
-          </StyledNavLink>
-          <StyledNavLink activeStyle={{ backgroundColor: 'black' }} to="/about">
+          </StyledNavLink> */}
+          {/* <StyledNavLink activeStyle={{ backgroundColor: 'black' }} to="/about">
             {'About'}
-          </StyledNavLink>
+          </StyledNavLink> */}
           <StyledNavLink
             activeStyle={{ backgroundColor: 'black' }}
             to="/entries"

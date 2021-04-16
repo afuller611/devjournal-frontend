@@ -1,6 +1,6 @@
 import React, { useState, useContext, createContext, useEffect } from 'react'
 import { useHistory, withRouter } from 'react-router-dom'
-import { logInAPI, getUserIdAPI } from '../api/usersAPI'
+import { logInAPI, getCurrentUserAPI } from '../api/usersAPI'
 
 const defaultAuthState = {
   isAuthenticated: false,
@@ -8,7 +8,8 @@ const defaultAuthState = {
   authenticate: (username: string, password: string) => {},
   logOut: () => {},
   authenticating: false,
-  userId: ''
+  currentUser: {name: ""},
+  setCurrentUser: (object: any) => {}
 }
 
 const AuthContext = createContext(defaultAuthState)
@@ -16,11 +17,11 @@ const AuthContext = createContext(defaultAuthState)
 export const useAuth = () => useContext(AuthContext)
 
 const AuthProvider = ({ ...props }) => {
-  const history = useHistory()
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const [authenticating, setAuthenticating] = useState(false)
+  const history = useHistory();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [authenticating, setAuthenticating] = useState(false);
   const [username, setUsername] = useState("");
-  const [userId, setUserId] = useState("");
+  const [currentUser, setCurrentUser] = useState({name: ""})
 
   const authenticate = (usernameParam: string, password: string) => {
     setAuthenticating(true)
@@ -35,7 +36,7 @@ const AuthProvider = ({ ...props }) => {
       setIsAuthenticated(true)
       setUsername(usernameParam)
       history.push('/entries')
-      setIsAuthenticated(false)
+      setAuthenticating(false)
     }).catch((err) => {
       // On error we'll assume invalid login credentials
       setIsAuthenticated(false)
@@ -55,23 +56,27 @@ const AuthProvider = ({ ...props }) => {
 
   // TODO
   useEffect(() => {
+    // On each refresh or authentication change let's check for access token
     if (localStorage.getItem('accessToken')) {
+      // If there is an access token, let's check to see if it's valid by calling the getUserIDAPI
       setAuthenticating(true)
-      getUserIdAPI().then((res) => {
-        console.log(res)
+      // getCurrentUserAPI will give us the details of the user that's currently logged in
+      getCurrentUserAPI().then((res) => {
           if (res) {
-            setUserId(res)
+            delete res.password;
+            setCurrentUser(res)
             setIsAuthenticated(true)
           } else {
-              setAuthenticating(false)
+            // If res is false, then scrap the token and set the user as not authenticated
               setIsAuthenticated(false)
               localStorage.removeItem("accessToken")
           }
+          setAuthenticating(false)
       })
-      // Call get self endpoint to see if JWT is still valid
-      // We can also send a request to API to see if it's a valid JWT
+
     }
-  }, [username])
+  }, [username, isAuthenticated])
+  console.log(currentUser)
 
   const authObject = {
     isAuthenticated,
@@ -79,7 +84,8 @@ const AuthProvider = ({ ...props }) => {
     authenticate,
     logOut,
     authenticating,
-    userId
+    currentUser,
+    setCurrentUser
   }
   return (
     <AuthContext.Provider value={authObject}>

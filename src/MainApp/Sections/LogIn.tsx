@@ -4,6 +4,7 @@ import { Button } from '../../components/Button'
 import { Input } from '../../components/Input'
 import { useAuth } from '../../ContextProviders/AuthProvider'
 import { Typography } from '../../components/Typography'
+import { Redirect } from 'react-router-dom'
 
 const LogIn = () => {
   const handleSubmit = (e: React.SyntheticEvent) => {
@@ -14,7 +15,13 @@ const LogIn = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
-  const { authenticate, authenticating } = useAuth()
+  const { authenticate, authenticating, isAuthenticated } = useAuth()
+
+  // If the user is already authenticated and comes to the login page, then just send them to the home page
+  if (isAuthenticated) {
+    return <Redirect to="/" />
+  }
+
   return (
     <form onSubmit={handleSubmit}>
       <Grid
