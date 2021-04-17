@@ -38,18 +38,17 @@ const ModalContent = styled.div<ModalDivProps>`
 `
 
 export const Modal: React.FC<ModalProps> = ({ children, ...props }) => {
-  const modalContentRef = useRef(null)
+  const modalContentRef = useRef<HTMLDivElement>(null)
   // Commenting out the modal off click because doesn't work as intended
-  // const handleModalContainerClick = (e: React.MouseEvent) => {
-  //   console.log(e.target)
-  //   if (modalContentRef.current && modalContentRef.current !== e.target) {
-  //     props.handleClose()
-  //   }
-  // }
+  const handleModalContainerClick = (e: React.MouseEvent) => {
+    if (modalContentRef.current && !modalContentRef.current.contains(e.target as Node)) {
+      props.handleClose()
+    }
+  }
 
   return (
     <ModalContainer
-      //  onClick={handleModalContainerClick}
+       onClick={handleModalContainerClick}
       {...props}
     >
       <Grid justify="center" container>

@@ -8,7 +8,7 @@ const defaultAuthState = {
   authenticate: (username: string, password: string) => {},
   logOut: () => {},
   authenticating: false,
-  currentUser: {name: ""},
+  currentUser: {name: "", id: ""},
   setCurrentUser: (object: any) => {}
 }
 
@@ -21,7 +21,7 @@ const AuthProvider = ({ ...props }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [authenticating, setAuthenticating] = useState(false);
   const [username, setUsername] = useState("");
-  const [currentUser, setCurrentUser] = useState({name: ""})
+  const [currentUser, setCurrentUser] = useState({name: "", id: ""})
 
   const authenticate = (usernameParam: string, password: string) => {
     setAuthenticating(true)
@@ -37,6 +37,7 @@ const AuthProvider = ({ ...props }) => {
       setUsername(usernameParam)
       history.push('/entries')
       setAuthenticating(false)
+      fetchCurrentUser();
     }).catch((err) => {
       // On error we'll assume invalid login credentials
       setIsAuthenticated(false)
@@ -54,8 +55,11 @@ const AuthProvider = ({ ...props }) => {
     setUsername('')
   }
 
-  // TODO
   useEffect(() => {
+      fetchCurrentUser();
+  }, [username, isAuthenticated])
+
+  const fetchCurrentUser = () => {
     // On each refresh or authentication change let's check for access token
     if (localStorage.getItem('accessToken')) {
       // If there is an access token, let's check to see if it's valid by calling the getUserIDAPI
@@ -63,7 +67,6 @@ const AuthProvider = ({ ...props }) => {
       // getCurrentUserAPI will give us the details of the user that's currently logged in
       getCurrentUserAPI().then((res) => {
           if (res) {
-            delete res.password;
             setCurrentUser(res)
             setIsAuthenticated(true)
           } else {
@@ -75,8 +78,7 @@ const AuthProvider = ({ ...props }) => {
       })
 
     }
-  }, [username, isAuthenticated])
-  console.log(currentUser)
+  }
 
   const authObject = {
     isAuthenticated,

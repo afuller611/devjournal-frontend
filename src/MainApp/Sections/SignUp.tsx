@@ -26,6 +26,8 @@ const SignUp = () => {
         alert(
           'It appears that username has already been used, please try again',
         )
+      }).finally(() => {
+        setIsSubmitting(false);
       })
   }
 

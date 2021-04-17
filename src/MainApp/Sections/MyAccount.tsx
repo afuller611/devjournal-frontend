@@ -1,21 +1,28 @@
 import React, { useState } from 'react'
 import { Modal } from '../../components/Modal'
-import { Tooltip, IconButton, Grid } from '@material-ui/core'
+import { Tooltip, IconButton, Grid, CircularProgress } from '@material-ui/core'
 import { AccountCircle } from '@material-ui/icons'
 import { Typography } from '../../components/Typography'
 import { Close } from '@material-ui/icons'
 import { Input } from '../../components/Input'
 import { useAuth } from '../../ContextProviders/AuthProvider'
 import { Button } from '../../components/Button'
+import { updateUserAPI } from '../../api/usersAPI'
 
 const MyAccount = ({ ...props }) => {
-  const { currentUser } = useAuth()
-
+  const { currentUser, setCurrentUser } = useAuth()
   const [open, setOpen] = useState(false)
   const [name, setName] = useState(currentUser.name)
+  const [loading, setLoading] = useState(false)
 
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault()
+    setLoading(true)
+    updateUserAPI(currentUser.id, currentUser.name)
+      .then((res) => {
+        setCurrentUser(res)
+      })
+      .finally(() => setLoading(false))
   }
 
   return (
@@ -43,7 +50,11 @@ const MyAccount = ({ ...props }) => {
               />
             </Grid>
             <Grid item xs={6}>
-              <Button>{'Submit New Name'}</Button>
+              {loading ? (
+                <CircularProgress />
+              ) : (
+                <Button>{'Submit New Name'}</Button>
+              )}
             </Grid>
           </Grid>
         </form>

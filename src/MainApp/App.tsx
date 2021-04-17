@@ -16,15 +16,13 @@ const App = () => {
       <Nav>{isAuthenticated ? <AuthNavContent /> : <UnauthNavContent />}</Nav>
       <ContentArea>
         {isAuthenticated && !authenticating && (
-          <>
             <Route path="/entries">
               <Entries />
             </Route>
-            <Route path="/signup-complete">
+        )}
+        <Route path="/signup-complete">
               <SignUpComplete />
             </Route>
-          </>
-        )}
         <Route path="/login">
           <LogIn />
         </Route>

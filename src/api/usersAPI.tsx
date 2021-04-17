@@ -27,7 +27,7 @@ export const logInAPI = async (username: string, password: string) => {
 export const getCurrentUserAPI = async () => {
   try {
     const res = await axios.put(
-      `${process.env.REACT_APP_API_URL}/api/v1/user/getCurrentUser`,
+      `${process.env.REACT_APP_API_URL}/api/v1/user/sub/getCurrentUser`,
       {}, // empty body
       {
         headers: {
@@ -41,17 +41,9 @@ export const getCurrentUserAPI = async () => {
   }
 }
 
-export const updateUserAPI = async (
-  id: string,
-  name: string,
-  cancelToken: any,
-) => {
-  const res = await axios.put(
-    `${process.env.REACT_APP_API_URL}/api/v1/user/${id}`,
-    {
-      name,
-    },
-    cancelToken,
-  )
+export const updateUserAPI = async (id: string, name: string) => {
+  const res = await axios.put(`${process.env.REACT_APP_API_URL}/api/v1/user/${id}`, { "name" : name }, {headers: {
+    authorization: `Bearer ${localStorage.getItem('accessToken')}`
+  }})
   return res.data
 }
