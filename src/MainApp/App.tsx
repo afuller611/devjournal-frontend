@@ -8,6 +8,7 @@ import UnauthNavContent from './Sections/UnauthNavContext'
 import SignUpComplete from './Sections/SignUpComplete'
 import LogIn from './Sections/LogIn'
 import Entries from './Sections/Entries'
+import EntryEditor from './Sections/EntryEditor'
 
 const App = () => {
   const { isAuthenticated, authenticating } = useAuth()
@@ -16,13 +17,18 @@ const App = () => {
       <Nav>{isAuthenticated ? <AuthNavContent /> : <UnauthNavContent />}</Nav>
       <ContentArea>
         {isAuthenticated && !authenticating && (
-            <Route path="/entries">
+          <>
+            <Route exact path="/entries">
               <Entries />
             </Route>
+            <Route path="/entries/:entryId">
+              <EntryEditor />
+            </Route>
+          </>
         )}
         <Route path="/signup-complete">
-              <SignUpComplete />
-            </Route>
+          <SignUpComplete />
+        </Route>
         <Route path="/login">
           <LogIn />
         </Route>

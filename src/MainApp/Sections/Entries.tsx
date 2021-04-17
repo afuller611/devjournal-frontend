@@ -1,27 +1,27 @@
+import { useEffect, useState } from 'react'
 import { Typography } from '../../components/Typography'
-import { Grid } from '@material-ui/core'
+import { Grid, CircularProgress } from '@material-ui/core'
 import { Button } from '../../components/Button'
-import { Link } from 'react-router-dom'
-
-const dummyData = [
-  {
-    title: 'test 1',
-    markdown: 'abcdef',
-    id: '1234',
-  },
-  {
-    title: 'test 2',
-    markdown: 'abcdef',
-    id: '4321',
-  },
-  {
-    title: 'test 3',
-    markdown: 'abcdef',
-    id: '90210',
-  },
-]
+import { Link, useHistory } from 'react-router-dom'
+import { getEntries } from '../../api/entriesAPI'
 
 const Entries = () => {
+  const [entries, setEntries] = useState([])
+  const [loading, setLoading] = useState(false)
+  const history = useHistory()
+
+  useEffect(() => {
+    setLoading(true)
+    getEntries()
+      .then((res) => {
+        // console.log(entries);
+        setEntries(res)
+      })
+      .finally(() => {
+        setLoading(false)
+      })
+  }, [])
+
   return (
     <div style={{ marginTop: 20 }}>
       <Typography variant="header" textAlign="center" color="white">
@@ -34,18 +34,30 @@ const Entries = () => {
         style={{ marginTop: 30 }}
       >
         <Grid item xs={8}>
-          {dummyData.map((entry) => {
-            return (
-              <div key={entry.id}>
-                <Link style={{ color: 'white' }} to={`/entry/${entry.id}`}>
-                  {entry.title}
-                </Link>
-              </div>
-            )
-          })}
+          {loading ? (
+            <div style={{ display: 'flex' }}>
+              <CircularProgress />
+            </div>
+          ) : entries && entries.length > 0 ? (
+            entries.map((entry: any) => {
+              return (
+                <div key={entry.id}>
+                  <Link style={{ color: 'white' }} to={`/entries/${entry.id}`}>
+                    {entry.title}
+                  </Link>
+                </div>
+              )
+            })
+          ) : (
+            <Typography variant="subheader" color="white">
+              {'No Entries Found, click Add New Entry to create one.'}
+            </Typography>
+          )}
         </Grid>
         <Grid container justify="flex-end" item xs={4}>
-          <Button>{'Add New Entry +'}</Button>
+          <Button onClick={() => history.push('/entries/0')}>
+            {'Add New Entry +'}
+          </Button>
         </Grid>
       </Grid>
     </div>

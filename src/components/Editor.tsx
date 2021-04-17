@@ -1,11 +1,11 @@
 import React from 'react'
-import Editor from '@monaco-editor/react'
+import Editor, {OnChange} from '@monaco-editor/react'
 import styled, { css } from 'styled-components'
 
 export interface EditorProps {
   darkMode?: boolean
   height?: string
-  onChange?: () => void
+  onChange?: OnChange
   value?: string
   defaultValue?: string
 }
