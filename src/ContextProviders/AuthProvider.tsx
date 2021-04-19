@@ -41,7 +41,6 @@ const AuthProvider = ({ ...props }) => {
         setUsername(usernameParam)
         history.push('/entries')
         setAuthenticating(false)
-        fetchCurrentUser()
       })
       .catch((err) => {
         // On error we'll assume invalid login credentials
@@ -58,10 +57,13 @@ const AuthProvider = ({ ...props }) => {
     setIsAuthenticated(false)
     history.push('/')
     setUsername('')
+    setCurrentUser({ name: '', id: '' })
   }
 
   useEffect(() => {
-    fetchCurrentUser()
+    if (isAuthenticated) {
+      fetchCurrentUser()
+    }
   }, [username, isAuthenticated])
 
   useEffect(() => {

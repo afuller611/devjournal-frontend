@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Modal } from '../../components/Modal'
 import { Tooltip, IconButton, Grid, CircularProgress } from '@material-ui/core'
 import { AccountCircle } from '@material-ui/icons'
@@ -14,6 +14,12 @@ const MyAccount = ({ ...props }) => {
   const [open, setOpen] = useState(false)
   const [name, setName] = useState(currentUser.name)
   const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    if (currentUser.name) {
+      setName(currentUser.name)
+    }
+  }, [currentUser.name])
 
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault()

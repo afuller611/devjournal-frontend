@@ -17,7 +17,7 @@ const DeleteUserDialog = (props: any) => {
     } catch (err) {
       alert('An error occurre while deleting the entry')
     }
-    history.push('/entries')
+    history.push('/users')
   }
 
   return (
