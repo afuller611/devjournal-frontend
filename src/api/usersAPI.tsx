@@ -61,3 +61,44 @@ export const getUsersAPI = async () => {
   })
   return res.data
 }
+
+export const getUserByIdAPI = async (userId: string) => {
+  const res = await axios.get(
+    `${process.env.REACT_APP_API_URL}/api/v1/user/${userId}`,
+    {
+      headers: {
+        authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+      },
+    },
+  )
+  return res.data
+}
+
+export const deleteUserByIdAPI = async (userId: string) => {
+  const res = await axios.delete(
+    `${process.env.REACT_APP_API_URL}/api/v1/user/${userId}`,
+    {
+      headers: {
+        authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+      },
+    },
+  )
+  return res.data
+}
+
+export const editUserByIdAPI = async (userObject: {
+  userId: string
+  username: string,
+  name: string
+}) => {
+  const res = await axios.put(
+    `${process.env.REACT_APP_API_URL}/api/v1/user/${userObject.userId}`,
+    { username: userObject.username, name: userObject.name },
+    {
+      headers: {
+        authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+      },
+    },
+  )
+  return res.data
+}

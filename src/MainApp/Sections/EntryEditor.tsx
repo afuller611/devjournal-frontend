@@ -21,8 +21,8 @@ const EntryEditor = () => {
   const { currentUser } = useAuth()
 
   useEffect(() => {
-    setLoading(true)
     if (entryId !== '0') {
+      setLoading(true)
       getEntryById(entryId)
         .then((res) => {
           setTitle(res.title)
@@ -64,7 +64,7 @@ const EntryEditor = () => {
   useEffect(() => {
     // If any of the dependencies change, let's set success to false if it's true
     setSuccess(false)
-  }, [markdown, title, entryId])
+  }, [markdown, title])
 
   if (loading) {
     return (
@@ -86,10 +86,12 @@ const EntryEditor = () => {
       >
         {'Back to All Entries <'}
       </Link>
-
+      <br />
+      <br />
       <Typography variant="header" color="white">
         {entryId === '0' ? 'Add a New Entry!' : 'Edit your Entry!'}
       </Typography>
+      <br />
       <Typography variant="subheader" color="white">
         {'Entry should be in markdown'}
       </Typography>
@@ -98,13 +100,15 @@ const EntryEditor = () => {
           {'Journal Entry Successfully Saved!'}
         </Typography>
       )}
-      <Button
-        backgroundColor="red"
-        style={{ marginTop: 20 }}
-        onClick={() => setDeleteDialogOpen(true)}
-      >
-        {'Delete Entry?'}
-      </Button>
+      {entryId !== '0' && (
+        <Button
+          backgroundColor="red"
+          style={{ marginTop: 20 }}
+          onClick={() => setDeleteDialogOpen(true)}
+        >
+          {'Delete Entry?'}
+        </Button>
+      )}
       <form onSubmit={handleSubmit} style={{ marginTop: 20 }}>
         <Grid
           container

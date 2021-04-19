@@ -18,20 +18,17 @@ const AuthNavContent = () => {
               alt="Dev Journal"
               style={{ height: 60, marginRight: 10, marginTop: 5 }}
             />
-          </Link>
-          {/* <StyledNavLink activeStyle={{ backgroundColor: 'black' }} to="/home">
-            {'Home'}
-          </StyledNavLink> */}
-          {/* <StyledNavLink activeStyle={{ backgroundColor: 'black' }} to="/about">
-            {'About'}
-          </StyledNavLink> */}
+          </Link>          
           <StyledNavLink
             activeStyle={{ backgroundColor: 'black' }}
             to="/entries"
           >
             {'Entries'}
           </StyledNavLink>
-        </div>{' '}
+          <StyledNavLink activeStyle={{ backgroundColor: 'black' }} to="/users">
+            {'User Management'}
+          </StyledNavLink>
+        </div>
       </Grid>
       <Grid item>
         <MyAccount />

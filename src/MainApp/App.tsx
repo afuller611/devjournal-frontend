@@ -9,9 +9,11 @@ import SignUpComplete from './Sections/SignUpComplete'
 import LogIn from './Sections/LogIn'
 import Entries from './Sections/Entries'
 import EntryEditor from './Sections/EntryEditor'
+import UserManagement from './Sections/UserManagement'
+import UserEdit from './Sections/UserEdit'
 
 const App = () => {
-  const { isAuthenticated, authenticating } = useAuth()
+  const { isAuthenticated, authenticating, isAdmin } = useAuth()
   return (
     <div>
       <Nav>{isAuthenticated ? <AuthNavContent /> : <UnauthNavContent />}</Nav>
@@ -24,6 +26,16 @@ const App = () => {
             <Route path="/entries/:entryId">
               <EntryEditor />
             </Route>
+            {isAdmin && (
+              <>
+                <Route exact path="/users/">
+                  <UserManagement />
+                </Route>
+                <Route path="/users/:userId">
+                  <UserEdit />
+                </Route>
+              </>
+            )}
           </>
         )}
         <Route path="/signup-complete">
