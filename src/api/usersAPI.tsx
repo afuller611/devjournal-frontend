@@ -6,7 +6,6 @@ export const signUpAPI = async (userObject: {
   name: string
 }) => {
   const res = await axios.post(`${process.env.REACT_APP_API_URL}/api/v1/user`, {
-    role: 'USER',
     ...userObject,
   })
   return res.data
@@ -42,8 +41,23 @@ export const getCurrentUserAPI = async () => {
 }
 
 export const updateUserAPI = async (id: string, name: string) => {
-  const res = await axios.put(`${process.env.REACT_APP_API_URL}/api/v1/user/${id}`, { "name" : name }, {headers: {
-    authorization: `Bearer ${localStorage.getItem('accessToken')}`
-  }})
+  const res = await axios.put(
+    `${process.env.REACT_APP_API_URL}/api/v1/user/${id}`,
+    { name: name },
+    {
+      headers: {
+        authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+      },
+    },
+  )
+  return res.data
+}
+
+export const getUsersAPI = async () => {
+  const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/v1/user`, {
+    headers: {
+      authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+    },
+  })
   return res.data
 }

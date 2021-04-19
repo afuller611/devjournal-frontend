@@ -26,7 +26,6 @@ const SignUp = () => {
         alert(
           'It appears that username has already been used, please try again',
         )
-      }).finally(() => {
         setIsSubmitting(false);
       })
   }
@@ -100,6 +99,11 @@ const SignUp = () => {
               label="Username"
               labelColor="white"
             />
+          </Grid>
+          <Grid item xs={12}>
+            <Typography color="white">
+              {"Note: Including the word 'admin' in your username will give you that role"}
+            </Typography>
           </Grid>
           <Grid item xs={12}>
             <Input
