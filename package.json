@@ -72,6 +72,9 @@
     "@types/react-router-dom": "^5.1.7"
   },
   "jest": {
-    "resetMocks": false
+    "resetMocks": false,
+      "transformIgnorePatterns": [
+        "node_modules/(?!(monaco-editor|react-monaco-editor)/)"
+      ]
   }
 }
