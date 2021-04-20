@@ -41,8 +41,7 @@ const SignUp = () => {
         >
           <Grid item xs={12}>
             <Typography color="white" textAlign="center" variant="header">
-              Welcome to Dev Journal! Your Personal Journal for all
-              things...Dev!
+              {`Welcome to Dev Journal! Your Personal Journal for all things...Dev!`}
             </Typography>
           </Grid>
           <Grid item xs={12} container justify="center">

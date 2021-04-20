@@ -65,7 +65,7 @@ const LogIn = () => {
           {authenticating ? (
             <CircularProgress style={{ color: '#19F8FF' }} />
           ) : (
-            <Button>{'Log In'}</Button>
+            <Button>{'Log Me In'}</Button>
           )}
         </Grid>
       </Grid>
