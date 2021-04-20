@@ -25,6 +25,7 @@ const UserEdit = () => {
       // New user
       signUpAPI({ name, username, password })
         .then((addedUser) => {
+          setSubmitting(false)
           history.push(`/users/${addedUser.id}`)
         })
         .catch((err) => {

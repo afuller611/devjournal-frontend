@@ -1,6 +1,6 @@
 import { BrowserRouter as Router } from 'react-router-dom'
 import AuthProvider from '../../ContextProviders/AuthProvider'
-import { render, fireEvent, screen, waitForElementToBeRemoved } from '@testing-library/react'
+import { render, fireEvent, screen } from '@testing-library/react'
 import { setupServer } from 'msw/node'
 import { rest } from 'msw'
 import App from '../App'

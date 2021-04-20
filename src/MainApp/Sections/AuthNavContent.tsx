@@ -7,7 +7,7 @@ import { useAuth } from '../../ContextProviders/AuthProvider'
 import { Link } from 'react-router-dom'
 
 const AuthNavContent = () => {
-  const { logOut } = useAuth()
+  const { logOut, isAdmin } = useAuth()
   return (
     <Grid container justify="space-between">
       <Grid item>
@@ -18,16 +18,21 @@ const AuthNavContent = () => {
               alt="Dev Journal"
               style={{ height: 60, marginRight: 10, marginTop: 5 }}
             />
-          </Link>          
+          </Link>
           <StyledNavLink
             activeStyle={{ backgroundColor: 'black' }}
             to="/entries"
           >
             {'Entries'}
           </StyledNavLink>
-          <StyledNavLink activeStyle={{ backgroundColor: 'black' }} to="/users">
-            {'User Management'}
-          </StyledNavLink>
+          {isAdmin && (
+            <StyledNavLink
+              activeStyle={{ backgroundColor: 'black' }}
+              to="/users"
+            >
+              {'User Management'}
+            </StyledNavLink>
+          )}
         </div>
       </Grid>
       <Grid item>
