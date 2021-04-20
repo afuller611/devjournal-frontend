@@ -34,14 +34,14 @@ const MyAccount = ({ ...props }) => {
   return (
     <>
       <Tooltip title={<Typography color="white">{'My Account'}</Typography>}>
-        <IconButton onClick={() => setOpen(true)}>
+        <IconButton data-testid="myAccountButton" onClick={() => setOpen(true)}>
           <AccountCircle style={{ fontSize: 40, fill: 'white' }} />
         </IconButton>
       </Tooltip>
       <Modal handleClose={() => setOpen(false)} open={open}>
         <Grid container justify="space-between">
           <Typography variant="header">{'My Account'}</Typography>
-          <IconButton onClick={() => setOpen(false)}>
+          <IconButton data-testid="closeMyAccount" onClick={() => setOpen(false)}>
             <Close />
           </IconButton>
         </Grid>
