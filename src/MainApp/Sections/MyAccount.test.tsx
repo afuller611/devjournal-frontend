@@ -3,8 +3,7 @@ import AuthProvider from '../../ContextProviders/AuthProvider'
 import {
   render,
   fireEvent,
-  screen,
-  findByAltText,
+  screen
 } from '@testing-library/react'
 import { setupServer } from 'msw/node'
 import { rest } from 'msw'

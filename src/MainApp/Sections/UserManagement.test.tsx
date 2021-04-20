@@ -4,7 +4,6 @@ import {
   render,
   fireEvent,
   screen,
-  findByAltText,
 } from '@testing-library/react'
 import { setupServer } from 'msw/node'
 import { rest } from 'msw'
