@@ -1,5 +1,5 @@
 import React from 'react'
-import Editor, {OnChange} from '@monaco-editor/react'
+import Editor, { OnChange } from '@monaco-editor/react'
 import styled, { css } from 'styled-components'
 
 export interface EditorProps {
@@ -29,7 +29,7 @@ export const CustomEditor: React.FC<EditorProps> = ({
     <StyledEditor
       defaultLanguage="markdown"
       height={height}
-      theme={darkMode ? "vs-dark" : "light"}
+      theme={darkMode ? 'vs-dark' : 'light'}
       darkMode={darkMode}
       {...props}
     />

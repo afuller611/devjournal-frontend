@@ -61,9 +61,7 @@ const AuthProvider = ({ ...props }) => {
   }
 
   useEffect(() => {
-    if (isAuthenticated) {
-      fetchCurrentUser()
-    }
+    fetchCurrentUser()
   }, [username, isAuthenticated])
 
   useEffect(() => {

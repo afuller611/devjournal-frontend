@@ -4,7 +4,6 @@ import { render, fireEvent, waitFor } from '@testing-library/react'
 import { setupServer } from 'msw/node'
 import { rest } from 'msw'
 import App from '../App'
-import Entries from './Entries'
 
 // Set up mock server
 const server = setupServer(
@@ -27,37 +26,40 @@ const server = setupServer(
     return res(ctx.json(entries))
   }),
   rest.get(
-    `${process.env.REACT_APP_API_URL}/api/v1/entry/b98f3d73-ca3a-4c77-ad08-a6ccacfdb4df`,
+    `${process.env.REACT_APP_API_URL}/api/v1/entry/:entryId`,
     (req, res, ctx) => {
-        console.log("did this get hit")
-      const entries = [
-        {
-          id: 'b98f3d73-ca3a-4c77-ad08-a6ccacfdb4df',
-          title: 'test journal entry',
-          markdown: 'what is up',
-        },
-      ]
-      return res(ctx.json(entries))
+      const entry = {
+        id: req.params.entryId,
+        title: 'test journal entry',
+        markdown: 'what is up',
+      }
+
+      return res(ctx.json(entry))
+    },
+  ),
+  rest.put(
+    `${process.env.REACT_APP_API_URL}/api/v1/user/sub/getCurrentUser`,
+    (req, res, ctx) => {
+      const user = {
+        id: '6d90d2c2-81b7-4e95-817e-60fa68aa87ff',
+        name: 'tester',
+        username: 'testermctest',
+        password: '',
+        role: 'ADMIN',
+      }
+      return res(ctx.json(user))
     },
   ),
 )
 
-beforeAll(() => server.listen())
+beforeAll(() =>
+  server.listen({
+    onUnhandledRequest: 'error',
+  }),
+)
+// beforeAll(() => server.listen())
 afterEach(() => server.resetHandlers())
 afterAll(() => server.close())
-
-// test('Rendering of the entries page', () => {
-//   const { getByText } = render(<Router>
-//     <AuthProvider>
-//       <Entries />
-//     </AuthProvider>
-//   </Router>,)
-
-//   // Checks all fields and buttons that should exist on entries page
-//   getByText('Your Journal Entries')
-//   getByText('Add New Entry +')
-
-// })
 
 test('Login and then view all entries, then select an entry', async () => {
   const { getByText, getByLabelText, getByDisplayValue } = render(
@@ -91,8 +93,7 @@ test('Login and then view all entries, then select an entry', async () => {
 
   await waitFor(() => getByText('Edit your Entry!'))
   await waitFor(() => getByText('Delete Entry?'))
-//   await waitFor(() => getByText('Title*'))
-//   await waitFor(() => getByDisplayValue('test journal entry'))
-//   await waitFor(() => getByDisplayValue('what is up'))
-
+  await waitFor(() => getByText('Title*'))
+  await waitFor(() => getByDisplayValue('test journal entry'))
+  await waitFor(() => getByDisplayValue('what is up'))
 })
