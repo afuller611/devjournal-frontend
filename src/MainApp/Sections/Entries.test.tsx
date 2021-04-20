@@ -1,6 +1,6 @@
 import { BrowserRouter as Router } from 'react-router-dom'
 import AuthProvider from '../../ContextProviders/AuthProvider'
-import { render, fireEvent, waitFor } from '@testing-library/react'
+import { render, fireEvent, screen, waitForElementToBeRemoved } from '@testing-library/react'
 import { setupServer } from 'msw/node'
 import { rest } from 'msw'
 import App from '../App'
@@ -50,6 +50,24 @@ const server = setupServer(
       return res(ctx.json(user))
     },
   ),
+  rest.delete(
+    `${process.env.REACT_APP_API_URL}/api/v1/entry/:entryId`,
+    (req, res, ctx) => {
+      return res(ctx.json(req.body))
+    },
+  ),
+  rest.put(
+    `${process.env.REACT_APP_API_URL}/api/v1/entry/:entryId`,
+    (req, res, ctx) => {
+      return res(ctx.json(req.body))
+    },
+  ),
+  rest.post(
+    `${process.env.REACT_APP_API_URL}/api/v1/entry/`,
+    (req, res, ctx) => {
+      return res(ctx.json(req.body))
+    },
+  ),
 )
 
 beforeAll(() =>
@@ -61,14 +79,24 @@ beforeAll(() =>
 afterEach(() => server.resetHandlers())
 afterAll(() => server.close())
 
-test('Login and then view all entries, then select an entry', async () => {
-  const { getByText, getByLabelText, getByDisplayValue } = render(
+
+// We could separate these into separate tests. But doing them all at once works too.
+test('Login and then view all entries, then select an entry, then edit it, then delete it, then add a new one', async () => {
+  const {
+    getByText,
+    getByLabelText,
+    findByText,
+    findByLabelText,
+    findByDisplayValue,
+  } = render(
     <Router>
       <AuthProvider>
         <App />
       </AuthProvider>
     </Router>,
   )
+  
+  // -------------------LOGGING IN---------------------
 
   // Click on login button
   const loginButtonNav = getByText('Log In')
@@ -86,14 +114,65 @@ test('Login and then view all entries, then select an entry', async () => {
   const submitButton = getByText('Log Me In')
   fireEvent.click(submitButton)
 
-  await waitFor(() => getByText(`Your Journal Entries`))
-
-  const entryLink = await waitFor(() => getByText('test journal entry'))
+  
+  // -------------------VIEW JOURNAL ENTRIES---------------------
+  
+  await findByText(`Your Journal Entries`)
+  // Go to the test journal entry
+  const entryLink = await findByText('test journal entry')
   fireEvent.click(entryLink)
 
-  await waitFor(() => getByText('Edit your Entry!'))
-  await waitFor(() => getByText('Delete Entry?'))
-  await waitFor(() => getByText('Title*'))
-  await waitFor(() => getByDisplayValue('test journal entry'))
-  await waitFor(() => getByDisplayValue('what is up'))
+  // Make sure the items are all there that we'd expect
+  await findByText('Edit your Entry!')
+  await findByText('Delete Entry?')
+  await findByLabelText('Title*')
+  await findByDisplayValue('test journal entry')
+  setTimeout(async () => await findByDisplayValue('what is up'), 1000)
+
+  // -------------------EDIT JOURNAL ENTRY---------------------
+  
+  // Change the title of the journal entry
+  const titleInput = await findByLabelText('Title*')
+  fireEvent.change(titleInput, { target: { value: 'Edited Journal Entry' } })
+
+  // Submit the journal entry edit
+  const submitEntryButton = await findByText('Save Journal Entry')
+  fireEvent.click(submitEntryButton)
+  // Check for success text
+  await findByText('Journal Entry Successfully Saved!')
+
+
+  // -------------------DELETE JOURNAL ENTRY---------------------
+
+  // Delete Journal Entry
+  const deleteButton = await findByText('Delete Entry?')
+  fireEvent.click(deleteButton)
+  await findByText('Are you sure you want to delete this journal entry?')
+
+  const confirmDeleteButton = await findByText('Delete')
+  fireEvent.click(confirmDeleteButton)
+  // Deleting progress bar
+  await screen.findByRole("progressbar")
+  // Reloading journal entries progress bar
+  await screen.findByRole("progressbar")
+  await findByText(`Your Journal Entries`)
+
+
+  // -------------------ADD NEW JOURNAL ENTRY---------------------
+
+  // Add new entry
+  const addNewButton = await findByText("Add New Entry +")
+  fireEvent.click(addNewButton)
+  await findByText("Add a New Entry!")
+  // Change the title of the journal entry
+  const addTitleInput = await findByLabelText('Title*')
+  fireEvent.change(addTitleInput, { target: { value: 'Added Journal Entry' } })
+  await findByDisplayValue("Added Journal Entry")
+
+  const submitButtonForAdd = await findByText("Save Journal Entry")
+  fireEvent.click(submitButtonForAdd)
+  await screen.findByRole("progressbar")
+  await screen.findByRole("progressbar")
+  // Reloaded the page so now it says you're editing
+  await findByText("Edit your Entry!")
 })

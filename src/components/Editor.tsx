@@ -1,6 +1,7 @@
 import React from 'react'
 import Editor, { OnChange } from '@monaco-editor/react'
 import styled, { css } from 'styled-components'
+import StyledLabel from './StyledLabel'
 
 export interface EditorProps {
   darkMode?: boolean
@@ -8,6 +9,10 @@ export interface EditorProps {
   onChange?: OnChange
   value?: string
   defaultValue?: string
+  id: string
+  labelColor?: string
+  label: string
+  required?: boolean
 }
 
 const StyledEditor = styled(Editor)<EditorProps>`
@@ -23,15 +28,22 @@ const StyledEditor = styled(Editor)<EditorProps>`
 export const CustomEditor: React.FC<EditorProps> = ({
   height = '90vh',
   darkMode = true,
+  labelColor = 'black',
   ...props
 }) => {
   return (
-    <StyledEditor
-      defaultLanguage="markdown"
-      height={height}
-      theme={darkMode ? 'vs-dark' : 'light'}
-      darkMode={darkMode}
-      {...props}
-    />
+    <>
+      <StyledLabel labelColor={labelColor} htmlFor={props.id}>
+        {`${props.label}${props.required ? '*' : ''}`}
+      </StyledLabel>
+      <StyledEditor
+        required
+        defaultLanguage="markdown"
+        height={height}
+        theme={darkMode ? 'vs-dark' : 'light'}
+        darkMode={darkMode}
+        {...props}
+      />
+    </>
   )
 }

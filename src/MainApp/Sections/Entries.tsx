@@ -25,10 +25,8 @@ const Entries = () => {
     setLoading(true)
     getEntries()
       .then((res) => {
-        // console.log(entries);
         setEntries(res)
-      })
-      .finally(() => {
+      }).finally(() => {
         setLoading(false)
       })
   }, [])

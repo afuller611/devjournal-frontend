@@ -130,6 +130,10 @@ const EntryEditor = () => {
           </Grid>
           <Grid item xs={12}>
             <CustomEditor
+              required
+              id="editor"
+              label="Markdown"
+              labelColor="white"
               value={markdown}
               onChange={(newValue, e) => setMarkdown(newValue || '')}
               height={'50vh'}
