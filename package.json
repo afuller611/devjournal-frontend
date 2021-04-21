@@ -78,8 +78,7 @@
       "node_modules/(?!(monaco-editor|react-monaco-editor)/)"
     ],
     "collectCoverageFrom": [
-      "src/**/*.tsx",
-      "src/**/Sections/*.tsx"
+      "src/**/*.tsx"
     ],
     "coveragePathIgnorePatterns": [
       "src/index.tsx",
